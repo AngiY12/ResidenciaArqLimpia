@@ -1,0 +1,91 @@
+====================================================================
+
+PROTOTIPO: CENTRO DE CONTROL CENTRAL (PASARELA LOCAL)
+
+Arquitectura Limpia y Diseño Dirigido por el Dominio (DDD)
+
+====================================================================
+
+
+
+Este repositorio contiene el prototipo funcional del "Centro de Control Central" de la residencia, enfocado en el Bounded Context de Monitorización.
+
+
+
+ESTRUCTURA DE CARPETAS
+
+----------------------
+
+El proyecto está estructurado en 3 capas lógicas siguiendo los principios de la Arquitectura Limpia (Clean Architecture) y Ports & Adapters, asegurando que el modelo de dominio no dependa de la tecnología externa.
+
+
+
+1. /domain (Capa de Entidades / Dominio)
+
+   Es el núcleo del sistema. No tiene dependencias externas.
+
+   - Contiene los Aggregates (ResidenteMonitorizado).
+
+   - Contiene los Value Objects (MetricaVital, UmbralMedico).
+
+   - Contiene los Domain Events (AlertaDeCaidaDetectada, AnomaliaSignosVitalesDetectada).
+
+   - Contiene los Domain Services (EvaluadorSignosVitales, DetectorCaidas).
+
+
+
+2. /application (Capa de Casos de Uso)
+
+   Orquesta la lógica del negocio sin saber cómo se obtienen los datos o dónde se guardan.
+
+   - use_cases.py: Contiene 'EvaluarMonitorizacionUseCase', que recibe comandos y coordina con el dominio.
+
+   - ports.py: Define las interfaces (contratos) que la infraestructura debe cumplir, como 'IEventOutboxPort' o 'IResidenteMonitorizadoRepository'.
+
+
+
+3. /infrastructure (Capa de Adaptadores y Frameworks)
+
+   Implementa los puertos definidos en la aplicación y maneja las tecnologías externas.
+
+   - simulador_sensores.py: Actúa como el adaptador de entrada, generando datos aleatorios para cumplir el requisito de "Simular entradas (sensores) sin necesidad de hardware real".
+
+   - sqlite_repository.py: Implementación en memoria/local de la persistencia de datos.
+
+   - console_publisher.py: Adaptador de salida que simula el envío de mensajes a la nube imprimiendo en consola.
+
+
+
+4. main.py
+
+   Es el punto de entrada (Composition Root). Aquí se instancian las dependencias de infraestructura, se inyectan en los casos de uso de la aplicación y se inicia el simulador.
+
+
+
+CÓMO EJECUTAR EL PROTOTIPO
+
+--------------------------
+
+1. Requisitos previos:
+
+   - Tener Python 3.8 o superior instalado.
+
+   - No se requieren librerías externas (solo librerías estándar de Python).
+
+
+
+2. Ejecución:
+
+   - Abre una terminal en la raíz del proyecto (la carpeta que contiene main.py).
+
+   - Ejecuta el siguiente comando:
+
+     python main.py
+
+   
+
+3. Salida esperada:
+
+   - La consola comenzará a mostrar las lecturas simuladas de los sensores de un residente.
+
+   - Cuando el simulador genere un valor anómalo (ej. pulsaciones altas o detección de caída), el sistema imprimirá una alerta clara en la consola, demostrando el flujo completo desde el sensor simulado hasta el evento de dominio y la publicación de la alerta.
