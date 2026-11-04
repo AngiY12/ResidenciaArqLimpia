@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional
+from application.use_cases import AlertaDetectadaIntegrationEvent
 from domain.entities import ResidenteMonitorizado
 
 class IEventPublisherPort(ABC):
