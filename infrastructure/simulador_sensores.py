@@ -13,15 +13,15 @@ class SimuladorSensores:
             
             # 1. Simular lectura normal de pulso
             pulso = random.uniform(70, 85)
-            print(f"💓 Pulso leído: {pulso:.1f} bpm")
+            print(f" Pulso leído: {pulso:.1f} bpm")
             self.caso_uso.ejecutar(EvaluarLecturaCommand(
                 residente_id=residente_id, tipo_sensor="pulso", valor_x=pulso, unidad="bpm"
             ))
 
             # 2. Forzar fiebre en el ciclo 2
             temp = 39.5 if i == 1 else 36.5
-            if i == 1: print(f"🌡️ Temperatura leída (ANÓMALA): {temp:.1f} °C")
-            else: print(f"🌡️ Temperatura leída: {temp:.1f} °C")
+            if i == 1: print(f" Temperatura leída (ANÓMALA): {temp:.1f} °C")
+            else: print(f" Temperatura leída: {temp:.1f} °C")
             
             self.caso_uso.ejecutar(EvaluarLecturaCommand(
                 residente_id=residente_id, tipo_sensor="temperatura", valor_x=temp, unidad="C"
@@ -29,7 +29,7 @@ class SimuladorSensores:
 
             # 3. Forzar caída en el último ciclo
             if i == ciclos - 1:
-                print(f"💥 ¡Impacto detectado en acelerómetro!")
+                print(f" ¡Impacto detectado en acelerómetro!")
                 # Vector que da una magnitud > 2.5G (ej: sqrt(1.5^2 + 2.0^2 + 1.0^2) = 2.69G)
                 self.caso_uso.ejecutar(EvaluarLecturaCommand(
                     residente_id=residente_id, tipo_sensor="acelerometro", 

@@ -3,7 +3,7 @@ from application.use_cases import AlertaDetectadaIntegrationEvent
 
 class ConsoleEventPublisher(IEventPublisherPort):
     def publicar(self, evento: AlertaDetectadaIntegrationEvent) -> None:
-        print(f"\n[NUBE - AMQP] 🚨 ¡ALERTA ENVIADA AL SERVICIO CENTRAL!")
+        print(f"\n[NUBE - AMQP]  ¡ALERTA ENVIADA AL SERVICIO CENTRAL!")
         print(f"  -> ID Evento : {evento.evento_id}")
         print(f"  -> Residente : {evento.residente_id}")
         print(f"  -> Tipo      : {evento.tipo_alerta}")
@@ -16,4 +16,4 @@ class LocalEventOutboxAdapter(IEventOutboxPort):
 
     def guardar_para_reenvio(self, evento: AlertaDetectadaIntegrationEvent) -> None:
         self.eventos_pendientes.append(evento)
-        print(f"[EDGE - OUTBOX] 💾 Evento '{evento.tipo_alerta}' guardado localmente (tolerancia a fallos).")
+        print(f"[EDGE - OUTBOX]  Evento '{evento.tipo_alerta}' guardado localmente (tolerancia a fallos).")
